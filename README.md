@@ -1,1 +1,1 @@
-# project_react
+# React + TypeScript + Vite
