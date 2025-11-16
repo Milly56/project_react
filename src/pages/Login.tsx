@@ -1,8 +1,10 @@
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
+import RegisterModal from "../components/RegisterModal";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [openRegister, setOpenRegister] = useState(false);
 
   return (
     <div className="relative flex justify-center items-center bg-gray-100 overflow-hidden min-h-screen px-4 sm:px-6 md:px-8">
@@ -11,7 +13,6 @@ export default function Login() {
                   w-full max-w-[1000px] 
                   min-h-screen lg:min-h-[500px]"
       >
-
         <img
           src="src/assets/moldura.png"
           alt="Fundo moldura mobile/tablet"
@@ -26,7 +27,6 @@ export default function Login() {
             className="absolute bottom-0 left-0 w-10 sm:w-[55px] md:w-[65px] opacity-85 lg:hidden"
           />
 
-        
           <img
             src="src/assets/moldura_direita.png"
             alt="Decoração canto superior direito"
@@ -78,9 +78,13 @@ export default function Login() {
           </form>
 
           <div className="w-full flex justify-end mt-4 max-w-[300px] sm:max-w-[380px] md:max-w-[420px] z-10">
-            <a href="#" className="text-[#7FCEFB] text-xs sm:text-sm hover:underline">
+            <button
+              type="button"
+              onClick={() => setOpenRegister(true)}
+              className="text-[#7FCEFB] text-xs sm:text-sm hover:underline"
+            >
               Cadastre-se agora
-            </a>
+            </button>
           </div>
         </div>
 
@@ -97,7 +101,7 @@ export default function Login() {
               "A sua biblioteca, a qualquer hora e em qualquer lugar. Faça seu login."
             </p>
 
-            <div className="relative flex justify-center items-center h-80 w-[340px] rounded-2xl overflow-hidden">
+            <div className="relative flex justify-center items-center h-75 w-60 rounded-2xl overflow-hidden ">
               <img
                 src="src/assets/moldura.png"
                 alt="Moldura decorativa"
@@ -114,6 +118,12 @@ export default function Login() {
           </div>
         </div>
       </div>
+
+      {/* MODAL DE CADASTRO */}
+      <RegisterModal
+        isOpen={openRegister}
+        onClose={() => setOpenRegister(false)}
+      />
     </div>
   );
 }
