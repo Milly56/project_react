@@ -1,14 +1,17 @@
-        import { ReactNode } from "react";
-        import { Navigate } from "react-router-dom";
-        import { useAuth } from "../context/authcontext";
-        import { isTokenValid } from "../utils/checkToken";
+    import { ReactNode } from "react";
+    import { Navigate } from "react-router-dom";
+    import { useAuth } from "../context/authcontext";
 
-        export function PrivateRoute({ children }: { children: ReactNode }) {
-        const { token } = useAuth();
+    export function PrivateRoute({ children }: { children: ReactNode }) {
+    const { token, loading, isAuthenticated } = useAuth();
 
-        if (!token || !isTokenValid(token)) {
-            return <Navigate to="/" replace />;
-        }
+    if (loading) {
+        return <div>Carregando...</div>; 
+    }
 
-        return <>{children}</>;
-        }
+    if (!token || !isAuthenticated) {
+        return <Navigate to="/" replace />;
+    }
+
+    return <>{children}</>;
+    }

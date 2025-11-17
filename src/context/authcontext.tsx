@@ -15,12 +15,14 @@
     login: (data: LoginSchemaType) => Promise<void>;
     logout: () => void;
     isAuthenticated: boolean;
+    loading: boolean;
     }
 
     const AuthContext = createContext<AuthContextType | null>(null);
 
     export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const savedToken = Cookies.get("token");
@@ -31,19 +33,24 @@
         Cookies.remove("token");
         setToken(null);
         }
+
+        setLoading(false);
     }, []);
 
     const login = async (data: LoginSchemaType) => {
         const response = await authService.authenticate(data);
-        const accessToken: string = response.token;
+        const accessToken = response.token;
 
-        if (!accessToken) throw new Error("Token não retornado pela API");
+        if (!accessToken) {
+        throw new Error("Token não retornado pela API");
+        }
 
         if (!isTokenValid(accessToken)) {
         throw new Error("Token retornado pela API está expirado ou inválido.");
         }
 
         Cookies.set("token", accessToken, { expires: 7 });
+
         setToken(accessToken);
     };
 
@@ -52,13 +59,16 @@
         setToken(null);
     };
 
+    const isAuthenticated = !!token && isTokenValid(token);
+
     return (
         <AuthContext.Provider
         value={{
             token,
             login,
             logout,
-            isAuthenticated: token !== null && isTokenValid(token),
+            isAuthenticated,
+            loading,
         }}
         >
         {children}

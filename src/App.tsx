@@ -9,7 +9,6 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-
           <Route path="/" element={<Login />} />
 
           <Route
@@ -20,7 +19,6 @@ function App() {
               </PrivateRoute>
             }
           />
-
         </Routes>
       </BrowserRouter>
     </AuthProvider>
