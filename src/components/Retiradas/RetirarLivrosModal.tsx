@@ -2,7 +2,7 @@
 
     export default function RetirarLivroModal({ onClose }: { onClose: () => void }) {
     const [titulo, setTitulo] = useState("");
-    const [categoria, setCategoria] = useState(""); // Agora campo de texto
+    const [categoria, setCategoria] = useState(""); 
     const [quantidade, setQuantidade] = useState("");
     const [telefone, setTelefone] = useState("");
     const [dataRetirada, setDataRetirada] = useState("");
