@@ -1,33 +1,38 @@
     import { useState } from "react";
-    import { retiradaService } from "../../services/retirada/pesquisa_retiradas.service";
+    import { devolucaoService } from "../../services/retirada/devolucao_retiradas.service";
 
-    export default function BuscarRetiradaModal({ onClose }: { onClose: () => void }) {
+    export default function DevolverLivroModal({ onClose }: { onClose: () => void }) {
     const [nomeUsuario, setNomeUsuario] = useState("");
     const [tituloLivro, setTituloLivro] = useState("");
     const [resultado, setResultado] = useState<any>(null);
     const [erro, setErro] = useState("");
 
-    async function handleBuscar() {
+    async function handleDevolucao() {
         setErro("");
         setResultado(null);
 
-        const response = await retiradaService.buscarPorNomeETitulo(
+        const response = await devolucaoService.registrarDevolucao({
         nomeUsuario,
-        tituloLivro
-        );
+        tituloLivro,
+        });
 
         if (!response.success) {
-        setErro(response.message || "Nenhuma retirada encontrada.");
+        setErro(response.message || "Erro ao registrar devolução.");
         return;
         }
 
-        setResultado(response.retirada);
+        setResultado({
+        nomeUsuario,
+        tituloLivro,
+        dataDevolucao: new Date().toISOString(),
+        mensagem: "Devolução registrada com sucesso!"
+        });
     }
 
     return (
         <div className="flex flex-col gap-4">
-        
-        <h2 className="text-xl font-semibold text-center">Buscar Retirada</h2>
+
+        <h2 className="text-xl font-semibold text-center">Devolver Livro</h2>
 
         <input
             type="text"
@@ -46,23 +51,26 @@
         />
 
         <button
-            onClick={handleBuscar}
+            onClick={handleDevolucao}
             className="bg-[#5288BC] text-white p-3 rounded-lg hover:opacity-90 transition"
         >
-            Buscar
+            Confirmar Devolução
         </button>
 
         {erro && <p className="text-red-500 text-center">{erro}</p>}
 
         {resultado && (
             <div className="border rounded-lg p-4 bg-gray-100 flex flex-col gap-2 text-sm">
+
+            <p className="text-green-700 font-semibold">
+                ✔ {resultado.mensagem}
+            </p>
+
             <p><strong>Usuário:</strong> {resultado.nomeUsuario}</p>
             <p><strong>Título:</strong> {resultado.tituloLivro}</p>
-            <p><strong>Quantidade:</strong> {resultado.quantidade}</p>
-            <p><strong>Motivo:</strong> {resultado.motivo}</p>
-            <p><strong>Contato:</strong> {resultado.contato}</p>
-            <p><strong>Retirada:</strong> {new Date(resultado.dataRetirada).toLocaleDateString()}</p>
-            <p><strong>Devolução:</strong> {resultado.dataDevolucao ? new Date(resultado.dataDevolucao).toLocaleDateString() : "Não devolvido"}</p>
+            <p><strong>Devolução:</strong> 
+                {new Date(resultado.dataDevolucao).toLocaleDateString()}
+            </p>
             </div>
         )}
 
@@ -72,7 +80,6 @@
         >
             Fechar
         </button>
-
         </div>
     );
     }

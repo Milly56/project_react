@@ -40,15 +40,20 @@ export default function RetirarLivrosModal({ onClose }: { onClose: () => void })
         }
     }
 
+    // -----------------------------
+    //  TELA DE SUCESSO (ESTILO = Buscar Retirada)
+    // -----------------------------
     if (success) {
         return (
             <div className="bg-white w-full max-w-md rounded-2xl p-6 shadow-lg text-center animate-fade-in">
                 
-                <div className="mx-auto w-14 h-14 rounded-lg bg-green-100 flex items-center justify-center mb-4">
+                <div className="mx-auto w-14 h-14 rounded-lg bg-green-100 flex items-center justify-center mb-4 shadow-sm">
                     <AiOutlineCheck className="text-green-600" size={32} />
                 </div>
 
-                <h3 className="text-xl font-semibold mb-2">Retirada registrada!</h3>
+                <h3 className="text-xl font-semibold mb-2 text-green-700">
+                    Retirada registrada!
+                </h3>
 
                 <p className="text-gray-600 mb-6">
                     A retirada do livro foi registrada com sucesso.
@@ -56,16 +61,11 @@ export default function RetirarLivrosModal({ onClose }: { onClose: () => void })
 
                 <button
                     onClick={onClose}
-                    className="relative px-6 py-2 rounded-lg font-semibold text-white 
-                            bg-linear-to-r from-green-500 to-emerald-600
-                            shadow-lg shadow-green-300/40 hover:shadow-green-400/50
-                            transition-all duration-300 hover:scale-105 cursor-pointer
-                            active:scale-95 overflow-hidden"
+                    className="px-6 py-2 rounded-lg font-semibold text-white 
+                            bg-green-600 hover:bg-green-700 transition-all duration-200
+                            shadow-md hover:shadow-lg active:scale-95"
                 >
-                    <span className="relative z-10">Fechar</span>
-
-                    <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/40 to-transparent 
-                                    animate-[shimmer_2s_infinite]"></span>
+                    Fechar
                 </button>
             </div>
         );

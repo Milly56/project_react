@@ -14,6 +14,8 @@ import ListaRetiradasModal from "../components/Retiradas/ListaRetiradasModal";
 
 import { Livro } from "../services/livro/livrobuscar.service";
 import { livroService } from "../services/livro/livroeditar.service";
+import BuscarRetiradaModal from "../components/Retiradas/BuscarRetiradasModal";
+import DevolverLivroModal from "../components/Retiradas/DevolucaoRetirada";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -190,10 +192,10 @@ export default function Home() {
               <ListaRetiradasModal onClose={() => setOpenSecond(false)} />
             )}
             {clickedButton === "home_atualizar" && (
-              <div className="text-center p-4">Excluir retirada</div>
+              <DevolverLivroModal onClose={() => setOpenSecond(false)} />
             )}
             {clickedButton === "home_pesquisar" && (
-              <div className="text-center p-4">Excluir retirada</div>
+              <BuscarRetiradaModal onClose={() => setOpenSecond(false)} />
             )}
             
             {clickedButton === "home_excluir" && (

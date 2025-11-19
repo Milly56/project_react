@@ -3,7 +3,7 @@ import { retiradaService, Retirada } from "../../services/retirada/listaretirada
 
 export default function ListaRetiradasModal({ onClose }: { onClose: () => void }) {
     const [retiradas, setRetiradas] = useState<Retirada[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState<string | null>(null);
 
     useEffect(() => {
@@ -31,8 +31,9 @@ export default function ListaRetiradasModal({ onClose }: { onClose: () => void }
     }, []);
 
     return (
-        <div className="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-lg max-w-lg mx-auto">
-            <h2 className="text-xl font-semibold text-center border-b pb-2">
+        <div className="flex flex-col gap-4">
+            
+            <h2 className="text-xl font-semibold text-center">
                 Lista de Retiradas
             </h2>
 
@@ -41,59 +42,36 @@ export default function ListaRetiradasModal({ onClose }: { onClose: () => void }
             {loading ? (
                 <p className="text-center">Carregando...</p>
             ) : (
-                <div>
+                <div className="flex flex-col gap-3">
                     {retiradas.length === 0 ? (
                         <p className="text-center">Nenhuma retirada encontrada.</p>
                     ) : (
-                        <ul className="space-y-4">
-                            {retiradas.map((retirada, idx) => (
-                                <li
-                                    key={idx}
-                                    className="border p-4 rounded-lg shadow-sm flex justify-between bg-gray-50"
-                                >
-                                    <div>
-                                        <span className="font-semibold text-lg">
-                                            {retirada.tituloLivro}
-                                        </span>
-                                        <br />
-                                        <span className="text-gray-600">{retirada.nomeUsuario}</span>
-                                        <br />
-                                        <span className="text-gray-600">
-                                            <strong>Motivo:</strong> {retirada.motivo}
-                                        </span>
-                                    </div>
-
-                                    <div className="text-right text-sm">
-                                        <span>
-                                            <strong>Contato:</strong> {retirada.contato}
-                                        </span>
-                                        <br />
-                                        <span>
-                                            <strong>Qtd:</strong> {retirada.quantidade}
-                                        </span>
-                                        <br />
-                                        <span>
-                                            <strong>Retirada:</strong>{" "}
-                                            {new Date(retirada.dataRetirada).toLocaleDateString("pt-BR")}
-                                        </span>
-                                        <br />
-                                        <span>
-                                            <strong>Devolução:</strong>{" "}
-                                            {retirada.dataDevolucao
-                                                ? new Date(retirada.dataDevolucao).toLocaleDateString("pt-BR")
-                                                : "—"}
-                                        </span>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
+                        retiradas.map((retirada, idx) => (
+                            <div
+                                key={idx}
+                                className="border rounded-lg p-4 bg-gray-100 flex flex-col gap-1 text-sm"
+                            >
+                                <p><strong>Usuário:</strong> {retirada.nomeUsuario}</p>
+                                <p><strong>Título:</strong> {retirada.tituloLivro}</p>
+                                <p><strong>Quantidade:</strong> {retirada.quantidade}</p>
+                                <p><strong>Motivo:</strong> {retirada.motivo}</p>
+                                <p><strong>Contato:</strong> {retirada.contato}</p>
+                                <p><strong>Retirada:</strong> {new Date(retirada.dataRetirada).toLocaleDateString("pt-BR")}</p>
+                                <p>
+                                    <strong>Devolução:</strong>{" "}
+                                    {retirada.dataDevolucao
+                                        ? new Date(retirada.dataDevolucao).toLocaleDateString("pt-BR")
+                                        : "Não devolvido"}
+                                </p>
+                            </div>
+                        ))
                     )}
                 </div>
             )}
 
             <button
                 onClick={onClose}
-                className="text-red-500 underline text-center mt-2"
+                className="text-red-500 underline text-center"
             >
                 Fechar
             </button>
