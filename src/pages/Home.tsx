@@ -16,6 +16,7 @@ import { Livro } from "../services/livro/livrobuscar.service";
 import { livroService } from "../services/livro/livroeditar.service";
 import BuscarRetiradaModal from "../components/Retiradas/BuscarRetiradasModal";
 import DevolverLivroModal from "../components/Retiradas/DevolucaoRetirada";
+import ExcluirRetiradaModal from "../components/Retiradas/ExcluirRetiradaModal";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -199,7 +200,7 @@ export default function Home() {
             )}
             
             {clickedButton === "home_excluir" && (
-              <div className="text-center p-4">Excluir retirada</div>
+              <ExcluirRetiradaModal onClose={() => setOpenSecond(false)} />
             )}
           </>
         )}
