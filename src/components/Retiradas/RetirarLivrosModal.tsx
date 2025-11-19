@@ -1,69 +1,150 @@
-    import { useState } from "react";
+import { useState } from "react";
+import { retiradaService } from "../../services/retirada/criar_retiradas.service";
+import { AiOutlineCheck, AiOutlineLoading3Quarters } from "react-icons/ai";
 
-    export default function RetirarLivroModal({ onClose }: { onClose: () => void }) {
-    const [titulo, setTitulo] = useState("");
-    const [categoria, setCategoria] = useState(""); 
-    const [quantidade, setQuantidade] = useState("");
-    const [telefone, setTelefone] = useState("");
-    const [dataRetirada, setDataRetirada] = useState("");
-    const [dataDevolucao, setDataDevolucao] = useState("");
+export default function RetirarLivrosModal({ onClose }: { onClose: () => void }) {
+    const [nomeUsuario, setNomeUsuario] = useState("");
+    const [tituloLivro, setTituloLivro] = useState("");
+    const [quantidadeLivro, setQuantidadeLivro] = useState("");
+    const [motivoRetirada, setMotivoRetirada] = useState("");
+    const [contato, setContato] = useState("");
+
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+
+    async function handleRetirar() {
+        if (!nomeUsuario || !tituloLivro || !quantidadeLivro || !motivoRetirada || !contato) {
+            setErrorMsg("Preencha todos os campos!");
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setErrorMsg("");
+
+            await retiradaService.criarRetirada({
+                nomeUsuario,
+                tituloLivro,
+                quantidadeLivro: Number(quantidadeLivro),
+                motivoRetirada,
+                contato,
+            });
+
+            setSuccess(true);
+        } catch (error) {
+            console.error(error);
+            setErrorMsg("Erro ao registrar retirada.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    if (success) {
+        return (
+            <div className="bg-white w-full max-w-md rounded-2xl p-6 shadow-lg text-center animate-fade-in">
+                
+                <div className="mx-auto w-14 h-14 rounded-lg bg-green-100 flex items-center justify-center mb-4">
+                    <AiOutlineCheck className="text-green-600" size={32} />
+                </div>
+
+                <h3 className="text-xl font-semibold mb-2">Retirada registrada!</h3>
+
+                <p className="text-gray-600 mb-6">
+                    A retirada do livro foi registrada com sucesso.
+                </p>
+
+                <button
+                    onClick={onClose}
+                    className="relative px-6 py-2 rounded-lg font-semibold text-white 
+                               bg-linear-to-r from-green-500 to-emerald-600
+                               shadow-lg shadow-green-300/40 hover:shadow-green-400/50
+                               transition-all duration-300 hover:scale-105 cursor-pointer
+                               active:scale-95 overflow-hidden"
+                >
+                    <span className="relative z-10">Fechar</span>
+
+                    <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/40 to-transparent 
+                                    animate-[shimmer_2s_infinite]"></span>
+                </button>
+            </div>
+        );
+    }
 
     return (
-        <div className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold mb-4 text-center">Retirar livro</h2>
+        <div className="flex flex-col gap-5 animate-fade-in">
+            <h2 className="text-xl font-semibold mb-2 text-center">Retirar livro</h2>
 
-        <input
-            className="border rounded-lg w-full p-3"
-            placeholder="Título do livro"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-        />
+            {errorMsg && (
+                <div className="text-red-500 text-center text-sm bg-red-100 border border-red-300 py-2 rounded-lg">
+                    {errorMsg}
+                </div>
+            )}
 
-        <input
-            className="border rounded-lg w-full p-3"
-            placeholder="Categoria"
-            value={categoria}
-            onChange={(e) => setCategoria(e.target.value)}
-        />
+            {/* Inputs uniformizados */}
+            <div className="flex flex-col gap-3">
+                <input
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 
+                               focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
+                    placeholder="Nome do usuário"
+                    value={nomeUsuario}
+                    onChange={(e) => setNomeUsuario(e.target.value)}
+                />
 
-        <input
-            type="number"
-            min="1"
-            className="border rounded-lg w-full p-3"
-            placeholder="Quantidade"
-            value={quantidade}
-            onChange={(e) => setQuantidade(e.target.value)}
-        />
+                <input
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 
+                               focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
+                    placeholder="Título do livro"
+                    value={tituloLivro}
+                    onChange={(e) => setTituloLivro(e.target.value)}
+                />
 
-        <input
-            type="tel"
-            className="border rounded-lg w-full p-3"
-            placeholder="Telefone"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-        />
+                <input
+                    type="number"
+                    min="1"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 
+                               focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
+                    placeholder="Quantidade"
+                    value={quantidadeLivro}
+                    onChange={(e) => setQuantidadeLivro(e.target.value)}
+                />
 
-        <input
-            type="date"
-            className="border rounded-lg w-full p-3"
-            value={dataRetirada}
-            onChange={(e) => setDataRetirada(e.target.value)}
-        />
+                <input
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 
+                               focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
+                    placeholder="Motivo da retirada"
+                    value={motivoRetirada}
+                    onChange={(e) => setMotivoRetirada(e.target.value)}
+                />
 
-        <input
-            type="date"
-            className="border rounded-lg w-full p-3"
-            value={dataDevolucao}
-            onChange={(e) => setDataDevolucao(e.target.value)}
-        />
+                <input
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 
+                               focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
+                    placeholder="Contato (telefone)"
+                    value={contato}
+                    onChange={(e) => setContato(e.target.value)}
+                />
+            </div>
 
-        <button className="bg-[#5288BC] text-white p-3 rounded-lg">
-            Retirar
-        </button>
+            {/* Botão principal com cor #5288BC */}
+            <button
+                className="flex items-center justify-center gap-2 bg-[#5288BC] hover:bg-[#3c6c99] 
+                           text-white py-2 rounded-lg transition disabled:opacity-50"
+                onClick={handleRetirar}
+                disabled={loading}
+            >
+                {loading && (
+                    <AiOutlineLoading3Quarters className="animate-spin text-white" size={20} />
+                )}
+                {loading ? "Registrando..." : "Retirar"}
+            </button>
 
-        <button onClick={onClose} className="text-red-500 underline text-center">
-            Cancelar
-        </button>
+            <button
+                onClick={onClose}
+                className="text-red-500 underline text-center"
+            >
+                Cancelar
+            </button>
         </div>
     );
-    }
+}

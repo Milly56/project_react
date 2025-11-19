@@ -25,15 +25,13 @@ export default function Home() {
 
   const navigate = useNavigate();
 
-  // Seleciona o livro na busca (não abre modal nenhum)
   const handleSelectLivro = (livro: Livro) => {
     setLivroSelecionado(livro);
   };
 
-  // Agora NENHUM botão abre o segundo modal diretamente
   const handleIconClick = (icon: string) => {
     setClickedButton(icon);
-    setOpen(true); // sempre abre o modal principal
+    setOpen(true); 
   };
 
   return (
@@ -101,7 +99,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ========== MODAL PRINCIPAL ========== */}
       <Modal isOpen={open} onClose={() => setOpen(false)}>
         <h2 className="text-xl font-semibold mb-4 text-center">Escolha uma opção</h2>
 
@@ -138,10 +135,8 @@ export default function Home() {
         </div>
       </Modal>
 
-      {/* ========== MODAL SECUNDÁRIO ========== */}
       <Modal isOpen={openSecond} onClose={() => setOpenSecond(false)}>
         
-        {/* LIVROS */}
         {choice === "livros" && (
           <>
             {clickedButton === "home_adiciona" && (
@@ -194,7 +189,13 @@ export default function Home() {
             {clickedButton === "home_lista" && (
               <ListaRetiradasModal onClose={() => setOpenSecond(false)} />
             )}
-
+            {clickedButton === "home_atualizar" && (
+              <div className="text-center p-4">Excluir retirada</div>
+            )}
+            {clickedButton === "home_pesquisar" && (
+              <div className="text-center p-4">Excluir retirada</div>
+            )}
+            
             {clickedButton === "home_excluir" && (
               <div className="text-center p-4">Excluir retirada</div>
             )}
