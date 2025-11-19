@@ -57,10 +57,10 @@ export default function RetirarLivrosModal({ onClose }: { onClose: () => void })
                 <button
                     onClick={onClose}
                     className="relative px-6 py-2 rounded-lg font-semibold text-white 
-                               bg-linear-to-r from-green-500 to-emerald-600
-                               shadow-lg shadow-green-300/40 hover:shadow-green-400/50
-                               transition-all duration-300 hover:scale-105 cursor-pointer
-                               active:scale-95 overflow-hidden"
+                            bg-linear-to-r from-green-500 to-emerald-600
+                            shadow-lg shadow-green-300/40 hover:shadow-green-400/50
+                            transition-all duration-300 hover:scale-105 cursor-pointer
+                            active:scale-95 overflow-hidden"
                 >
                     <span className="relative z-10">Fechar</span>
 
@@ -81,11 +81,10 @@ export default function RetirarLivrosModal({ onClose }: { onClose: () => void })
                 </div>
             )}
 
-            {/* Inputs uniformizados */}
             <div className="flex flex-col gap-3">
                 <input
                     className="w-full px-3 py-2 rounded-lg border border-gray-300 
-                               focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
+                            focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
                     placeholder="Nome do usuário"
                     value={nomeUsuario}
                     onChange={(e) => setNomeUsuario(e.target.value)}
@@ -93,7 +92,7 @@ export default function RetirarLivrosModal({ onClose }: { onClose: () => void })
 
                 <input
                     className="w-full px-3 py-2 rounded-lg border border-gray-300 
-                               focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
+                            focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
                     placeholder="Título do livro"
                     value={tituloLivro}
                     onChange={(e) => setTituloLivro(e.target.value)}
@@ -103,7 +102,7 @@ export default function RetirarLivrosModal({ onClose }: { onClose: () => void })
                     type="number"
                     min="1"
                     className="w-full px-3 py-2 rounded-lg border border-gray-300 
-                               focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
+                            focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
                     placeholder="Quantidade"
                     value={quantidadeLivro}
                     onChange={(e) => setQuantidadeLivro(e.target.value)}
@@ -111,7 +110,7 @@ export default function RetirarLivrosModal({ onClose }: { onClose: () => void })
 
                 <input
                     className="w-full px-3 py-2 rounded-lg border border-gray-300 
-                               focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
+                            focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
                     placeholder="Motivo da retirada"
                     value={motivoRetirada}
                     onChange={(e) => setMotivoRetirada(e.target.value)}
@@ -119,17 +118,16 @@ export default function RetirarLivrosModal({ onClose }: { onClose: () => void })
 
                 <input
                     className="w-full px-3 py-2 rounded-lg border border-gray-300 
-                               focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
+                            focus:ring-2 focus:ring-[#5288BC] focus:border-[#5288BC] outline-none"
                     placeholder="Contato (telefone)"
                     value={contato}
                     onChange={(e) => setContato(e.target.value)}
                 />
             </div>
 
-            {/* Botão principal com cor #5288BC */}
             <button
                 className="flex items-center justify-center gap-2 bg-[#5288BC] hover:bg-[#3c6c99] 
-                           text-white py-2 rounded-lg transition disabled:opacity-50"
+                        text-white py-2 rounded-lg transition disabled:opacity-50"
                 onClick={handleRetirar}
                 disabled={loading}
             >
