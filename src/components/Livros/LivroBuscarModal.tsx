@@ -8,6 +8,7 @@
 
     export default function LivroBuscarModal({
     onClose,
+    onSelect,
     }: LivroBuscarModalProps) {
     const [titulo, setTitulo] = useState("");
     const [erro, setErro] = useState<string | null>(null);
@@ -71,6 +72,15 @@
                 <strong>Quantidade:</strong> {livroEncontrado.quantidade}
             </p>
 
+            <button
+                onClick={() => {
+                onSelect(livroEncontrado); 
+                onClose();                
+                }}
+                className="bg-green-600 text-white p-2 rounded-lg"
+            >
+                Selecionar
+            </button>
             </div>
         )}
 
