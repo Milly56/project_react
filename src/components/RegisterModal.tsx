@@ -3,6 +3,7 @@ import { usuarioSchema } from "../schema/CadrastroSchema";
 import { AiOutlineCheck } from "react-icons/ai";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { usuarioService } from "../services/cadrastro.service";
+import { TextField } from "@mui/material";
 
 interface RegisterModalProps {
   isOpen: boolean;
@@ -110,10 +111,8 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
 
           {/* NOME */}
           <div>
-            <label className="block text-xs text-gray-600 mb-1">
-              Nome completo
-            </label>
-            <input
+            <TextField
+              label="Nome"
               className="w-full px-3 py-2 border border-gray-300 rounded text-sm sm:text-base"
               placeholder="Digite seu nome"
               value={nome}
@@ -129,7 +128,7 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             <label className="block text-xs text-gray-600 mb-1">
               Data de nascimento
             </label>
-            <input
+            <TextField
               type="date"
               className="w-full px-3 py-2 border border-gray-300 rounded text-sm sm:text-base"
               value={dataNascimento}
@@ -144,8 +143,8 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
 
           {/* EMAIL */}
           <div>
-            <label className="block text-xs text-gray-600 mb-1">E-mail</label>
-            <input
+            <TextField
+              label="Email"
               className="w-full px-3 py-2 border border-gray-300 rounded text-sm sm:text-base"
               placeholder="Digite seu email"
               value={email}
@@ -158,9 +157,9 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
 
           {/* SENHA */}
           <div>
-            <label className="block text-xs text-gray-600 mb-1">Senha</label>
             <div className="relative">
-              <input
+              <TextField
+                label="Senha"
                 className="w-full px-3 py-2 border border-gray-300 rounded text-sm sm:text-base pr-10"
                 placeholder="Digite sua senha"
                 type={showPass ? "text" : "password"}
@@ -185,14 +184,14 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
           <button
             onClick={handleRegister}
             disabled={loading}
-            className={`w-full bg-[#5288BC] hover:bg-[#41719A] text-white py-2.5 rounded font-medium text-sm sm:text-base ${
-              loading ? "opacity-70 cursor-not-allowed" : ""
+            className={`w-full bg-[#5288BC] hover:bg-[#41719A] transition-all duration-300 ease-in-out text-white py-2.5 rounded font-medium text-sm sm:text-base ${
+              loading ? "opacity-70 cursor-pointer" : "cursor-pointer"
             }`}
           >
             {loading ? "Cadastrando..." : "Cadastrar-se"}
           </button>
 
-          <button onClick={onClose} className="text-red-500 underline text-center">
+          <button onClick={onClose} className="text-red-500 underline text-center cursor-pointer">
             Cancelar
           </button>
         </div>
