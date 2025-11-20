@@ -93,7 +93,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* LADO DIREITO */}
         <div className="relative hidden lg:flex flex-col justify-center items-center text-white px-8 pt-8 pb-10 overflow-hidden bg-[url('src/assets/fundo.png')] bg-cover bg-center">
           <h3 className=" relative text-[25px] font-bold mb-8 text-center top-0.1">O futuro começa com a leitura!</h3>
           <div className="flex items-end gap-6 w-full justify-center mt-8">
