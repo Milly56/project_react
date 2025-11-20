@@ -1,9 +1,10 @@
+"use client";
+
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import Modal from "../components/Modal";
-
 import LivroAdicionarModal from "../components/Livros/LivroAdicionarModal";
 import RetirarLivroModal from "../components/Retiradas/RetirarLivrosModal";
 import LivroBuscarModal from "../components/Livros/LivroBuscarModal";
@@ -17,11 +18,11 @@ import { livroService } from "../services/livro/livroeditar.service";
 import BuscarRetiradaModal from "../components/Retiradas/BuscarRetiradasModal";
 import DevolverLivroModal from "../components/Retiradas/DevolucaoRetirada";
 import ExcluirRetiradaModal from "../components/Retiradas/ExcluirRetiradaModal";
+import CategoriaMenu from "../components/CategoriaMenu";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
   const [openSecond, setOpenSecond] = useState(false);
-
   const [clickedButton, setClickedButton] = useState("");
   const [choice, setChoice] = useState("");
   const [livroSelecionado, setLivroSelecionado] = useState<Livro | null>(null);
@@ -32,14 +33,33 @@ export default function Home() {
     setLivroSelecionado(livro);
   };
 
-  const handleIconClick = (icon: string) => {
-    setClickedButton(icon);
-    setOpen(true); 
+  const handleCategoriaClick = (titulo: string) => {
+    const titleToIconMap: Record<string, string> = {
+      "adicionar livros a biblioteca digital": "home_adiciona",
+      "excluir livros da biblioteca digital": "home_excluir",
+      "listar livros da biblioteca digital": "home_lista",
+      "pesquisar livros na biblioteca digital": "home_pesquisar",
+      "atualizar livros da biblioteca digital": "home_atualizar",
+    };
+    
+    const icon = titleToIconMap[titulo];
+    if (icon) {
+      setClickedButton(icon);
+      setOpen(true);
+    }
   };
 
+  const categorias = [
+    {titulo: "adicionar livros a biblioteca digital", icon: "src/assets/home_adiciona.png"},
+    {titulo: "excluir livros da biblioteca digital", icon: "src/assets/home_excluir.png"},
+    {titulo: "listar livros da biblioteca digital", icon: "src/assets/home_lista.png"},
+    {titulo: "pesquisar livros na biblioteca digital", icon: "src/assets/home_pesquisar.png"},
+    {titulo: "atualizar livros da biblioteca digital", icon: "src/assets/home_atualizar.png"},
+  ];
+
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100 px-2 sm:px-4">
-      <div className="rounded-2xl shadow-xl bg-[#678DB2] w-full max-w-[960px] h-auto flex flex-col relative overflow-hidden p-4 sm:p-6 md:p-8">
+    <div className="flex justify-center items-center bg-gray-100 px-2 sm:p-4">
+      <div className="h-full rounded-2xl shadow-xl bg-[#678DB2] w-full flex flex-col relative overflow-hidden p-4 sm:p-6 md:p-8">
 
         <div className="absolute top-4 right-4">
           <FaUserCircle
@@ -68,9 +88,7 @@ export default function Home() {
                 className="w-full opacity-80"
               />
 
-              <p className="absolute inset-0 flex items-center justify-center text-white text-center text-sm font-medium px-4">
-                A sua biblioteca, a qualquer hora e em qualquer lugar
-              </p>
+              <p className="absolute inset-0 flex items-center justify-center text-white text-center text-sm font-medium px-4">A sua biblioteca, a qualquer hora e em qualquer lugar</p>
             </div>
           </div>
         </div>
@@ -83,20 +101,13 @@ export default function Home() {
           />
         </div>
 
-        <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 mt-4 mb-2">
-          {[
-            "home_adiciona",
-            "home_excluir",
-            "home_lista",
-            "home_pesquisar",
-            "home_atualizar",
-          ].map((icon) => (
-            <img
-              key={icon}
-              src={`src/assets/${icon}.png`}
-              alt={icon}
-              className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 hover:scale-105 transition-transform cursor-pointer"
-              onClick={() => handleIconClick(icon)}
+        {/* Fixed CategoriaMenu mapping */}
+        <div className="flex flex-row items-center justify-around gap-5">
+          {categorias.map((categoria) => (
+            <CategoriaMenu
+              key={categoria.titulo}
+              icon={categoria.icon}
+              onClick={() => handleCategoriaClick(categoria.titulo)}
             />
           ))}
         </div>
