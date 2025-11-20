@@ -1,6 +1,9 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AiOutlineCheck } from "react-icons/ai";
+import { TextField } from "@mui/material";
 
 interface RegisterModalProps {
   isOpen: boolean;
@@ -41,39 +44,38 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
 
       {!success && (
-        <div className="bg-white w-full max-w-md rounded-2xl p-6 shadow-lg animate-fade-in">
-
-          <h3 className="text-xl font-semibold text-center mb-4">
-            Cadastre-se agora
-          </h3>
-
+        <div className="bg-white w-full max-w-md rounded-2xl p-10 shadow-lg animate-fade-in">
+          <h3 className="text-xl font-semibold text-center mb-4">Cadastre-se agora</h3>
           <form className="space-y-4" onSubmit={handleSubmit}>
-
             <div>
-              <label className="block text-xs text-gray-600 mb-1">Nome</label>
-              <input name="name" required className={inputStyle} />
+              <TextField
+                type="text"
+                label="Nome" 
+                name="name"
+                required 
+                className={inputStyle} 
+              />
             </div>
-
-
             <div>
-              <label className="block text-xs text-gray-600 mb-1">
-                Data de nascimento
-              </label>
-              <input type="date" name="dob" className={inputStyle} />
+              <TextField 
+                type="date" 
+                name="dob"
+                className={inputStyle}
+              />
             </div>
-
             <div>
-              <label className="block text-xs text-gray-600 mb-1">Email</label>
-              <input type="email" name="email" required className={inputStyle} />
+              <TextField
+                label="Email"
+                type="email"
+                name="email"
+                required 
+                className={inputStyle} 
+              />
             </div>
-
             <div>
-              <label className="block text-xs text-gray-600 mb-1">
-                Digite sua senha
-              </label>
-
               <div className="relative">
-                <input
+                <TextField
+                  label="Senha"
                   type={pw1 ? "text" : "password"}
                   name="password"
                   required
@@ -82,21 +84,16 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
                 <button
                   type="button"
                   onClick={() => setPw1(!pw1)}
-                  className="absolute inset-y-0 right-3 flex items-center 
-                            text-gray-500 hover:text-gray-700"
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
                 >
-                  {pw1 ? <FaEyeSlash /> : <FaEye />}
+                  {pw2 ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
                 </button>
               </div>
             </div>
-
             <div>
-              <label className="block text-xs text-gray-600 mb-1">
-                Confirme sua senha
-              </label>
-
               <div className="relative">
-                <input
+                <TextField
+                  label="Confirme sua senha"
                   type={pw2 ? "text" : "password"}
                   name="password2"
                   required
@@ -105,31 +102,26 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
                 <button
                   type="button"
                   onClick={() => setPw2(!pw2)}
-                  className="absolute inset-y-0 right-3 flex items-center 
-                            text-gray-500 hover:text-gray-700"
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
                 >
-                  {pw2 ? <FaEyeSlash /> : <FaEye />}
+                  {pw2 ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
                 </button>
               </div>
             </div>
 
             <button
-              className="w-full bg-[#5288BC] hover:bg-[#41719A] 
-                      text-white py-2.5 sm:py-3 rounded font-medium text-sm sm:text-base"
               type="submit"
+              className="w-full bg-[#5288BC] hover:bg-[#41719A] text-white py-2.5 sm:py-3 rounded font-medium text-sm sm:text-base cursor-pointer transition-colors duration-300 ease-in-out"
             >
               Cadastrar
             </button>
-
             <button
               type="button"
               onClick={onClose}
-              className="w-full text-[#FF5F59] text-xs sm:text-sm 
-                        font-medium mt-2 hover:underline"
+              className="w-full font-bold text-[#FF5F59] text-xs sm:text-sm -medium mt-2 hover:underline cursor-pointer"
             >
               Cancelar
             </button>
-
           </form>
         </div>
       )}
@@ -142,33 +134,24 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
           </div>
 
           <h3 className="text-xl font-semibold mb-2">Cadastrado com sucesso!</h3>
-
-          <p className="text-gray-600 mb-6">
-            Parabéns! Seu cadastro foi criado com sucesso.
-          </p>
+          <p className="text-gray-600 mb-6">Parabéns! Seu cadastro foi criado com sucesso.</p>
 
           <div className="flex gap-3">
-
             <button
-              className="w-1/2 py-2 rounded font-medium text-sm
-                        border border-[#FF5F59] text-[#FF5F59] hover:bg-red-50"
+              className="w-1/2 py-2 rounded font-medium text-sm border border-[#FF5F59] text-[#FF5F59] hover:bg-red-50"
               onClick={onClose}
             >
               Fechar
             </button>
-
             <button
-              className="w-1/2 bg-[#5288BC] hover:bg-[#41719A]
-                        text-white py-2 rounded font-medium text-sm"
+              className="w-1/2 bg-[#5288BC] hover:bg-[#41719A] text-white py-2 rounded font-medium text-sm"
               onClick={onClose}
             >
               Fazer Login
             </button>
-
           </div>
         </div>
       )}
-
     </div>
   );
 }
