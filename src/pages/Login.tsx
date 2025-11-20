@@ -106,7 +106,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* LADO DIREITO */}
         <div
           className="relative hidden lg:flex flex-col justify-start items-center text-white px-8 pt-8 pb-10 overflow-hidden 
                       bg-[url('src/assets/fundo.png')] bg-cover bg-center"
