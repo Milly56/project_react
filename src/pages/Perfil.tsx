@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { authService } from "../services/ath.service";
 import { usuarioService } from "../services/perfil.service";
 import { useNavigate } from "react-router-dom";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 export default function Perfil() {
 	const [usuario, setUsuario] = useState<any>(null);
@@ -41,47 +42,60 @@ export default function Perfil() {
 	if (!usuario) return <p className="text-center mt-10">Carregando...</p>;
 
 	const handleLogout = () => {
-			authService.clearToken();
-			navigate("/");
+		authService.clearToken();
+		navigate("/");
 	};
 
-	const handleDelete = async () => {
-			const confirmacao = confirm("Tem certeza que deseja excluir sua conta?");
-			if (!confirmacao) return;
+	const handleReturnHome = () => {
+		navigate("/home");
+	}
 
-			try {
+	const handleDelete = async () => {
+		const confirmacao = confirm("Tem certeza que deseja excluir sua conta?");
+		if (!confirmacao) return;
+
+		try {
 			await usuarioService.deletarUsuario(usuario.id);
 			authService.clearToken();
 			navigate("/");
-			} catch (error) {
+		} catch (error) {
 			console.error("Erro ao deletar usuário:", error);
 			alert("Erro ao excluir usuário.");
-			}
+		}
 	};
 
 	const handleUpdate = async () => {
-			try {
+		try {
 			const id = usuario.id;
 
 			const updated = await usuarioService.atualizarUsuario(id, {
-					nome,
-					email,
+				nome,
+				email,
 			});
 
 			setUsuario(updated);
 			setEditMode(false);
 			alert("Perfil atualizado com sucesso!");
-			} catch (error) {
+		} catch (error) {
 			console.error("Erro ao atualizar usuário:", error);
 			alert("Erro ao atualizar perfil.");
-			}
+		}
 	};
 
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-			<div className="bg-white shadow-lg rounded-2xl border border-gray-200 p-8 w-full max-w-md mb-8">
-				<h1 className="text-2xl font-semibold text-center mb-6 text-[#5288BC]">Perfil do Usuário</h1>
-					<div className="space-y-6">
+			<div className="bg-white shadow-lg rounded-2xl border border-gray-200 p-8 w-[full] mb-8">
+				<div className="flex flex-row justify-between items-center">
+					<KeyboardBackspaceIcon onClick={handleReturnHome} className="text-[#5288BC] cursor-pointer"/>
+					<button
+						onClick={handleLogout}
+						className="px-3 py-2 bg-[#5288BC] text-white rounded-lg hover:bg-[#41719A] transition text-sm cursor-pointer"
+					>
+						Logout
+					</button>
+				</div>
+				<h1 className="text-2xl font-semibold text-center my-10 sm:my-6 text-[#5288BC]">Perfil do Usuário</h1>
+					<div className="flex flex-row justify-between flex-wrap gap-5">
 						<div>
 							<label className="block text-gray-700 font-semibold mb-1">Nome</label>
 							{editMode ? (
@@ -89,8 +103,7 @@ export default function Perfil() {
 								type="text"
 								value={nome}
 								onChange={(e) => setNome(e.target.value)}
-								className="w-full px-3 py-2 rounded-lg border border-transparent bg-transparent text-gray-700
-								focus:outline-none focus:ring-2 focus:ring-[#5288BC] shadow-inner"
+								className="w-full px-3 py-2 rounded-lg border border-transparent bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#5288BC] shadow-inner"
 							/>
 							) : (
 							<input
@@ -109,8 +122,7 @@ export default function Perfil() {
 									type="email"
 									value={email}
 									onChange={(e) => setEmail(e.target.value)}
-									className="w-full px-3 py-2 rounded-lg border border-transparent bg-transparent text-gray-700
-									focus:outline-none focus:ring-2 focus:ring-[#5288BC] shadow-inner"
+									className="w-full px-3 py-2 rounded-lg border border-transparent bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#5288BC] shadow-inner"
 								/>
 								) : (
 								<input
@@ -123,41 +135,34 @@ export default function Perfil() {
 						</div>
 					</div>
 
-					<div className="mt-8 flex justify-between gap-2">
+					<div className="mt-8 flex flex-row justify-center sm:justify-end gap-4">
 						{editMode ? (
 							<button
 								onClick={handleUpdate}
-								className="px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition text-sm"
+								className="px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition text-sm cursor-pointer"
 							>
 								Salvar
 							</button>
 						) : (
 							<button
 								onClick={() => setEditMode(true)}
-								className="px-3 py-2 bg-yellow-400 text-white rounded-lg hover:bg-yellow-500 transition text-sm"
+								className="px-6 py-2 bg-[#FFA239] text-white rounded-lg hover:bg-[#fcac52] transition text-sm cursor-pointer"
 							>
 								Editar
 							</button>
 						)}
-
-						<button
-							onClick={handleLogout}
-							className="px-3 py-2 bg-[#5288BC] text-white rounded-lg hover:bg-[#41719A] transition text-sm"
-						>
-							Logout
-						</button>
 						<button
 							onClick={handleDelete}
-							className="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition text-sm"
+							className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300 ease-in-out text-sm cursor-pointer"
 						>
-							Excluir
+							Excluir conta
 						</button>
 					</div>
 
 					{usuario.id === 1 && (
 						<button
 							onClick={() => setShowModal(true)}
-							className="mt-4 w-full px-3 py-2 bg-[#7FCEFB] text-white rounded-lg hover:bg-[#6AC0EB] transition text-sm"
+							className="mt-10 w-full px-3 py-2 bg-[#5288BC] text-white rounded-lg hover:bg-[#3e79af] transition text-sm cursor-pointer"
 						>
 							Listar Usuários
 						</button>
