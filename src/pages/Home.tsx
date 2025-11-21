@@ -28,9 +28,7 @@ export default function Home() {
 
   const navigate = useNavigate();
 
-  const handleSelectLivro = (livro: Livro) => {
-    setLivroSelecionado(livro);
-  };
+  const handleSelectLivro = (livro: Livro) => setLivroSelecionado(livro);
 
   const handleCategoriaClick = (titulo: string) => {
     const titleToIconMap: Record<string, string> = {
@@ -56,32 +54,28 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex justify-center items-center bg-gray-100 px-2 sm:p-4 min-h-screen">
-      {/* Card principal ajustado à imagem */}
-      <div className="relative rounded-2xl shadow-xl bg-[#678DB2] overflow-hidden w-full max-w-[400px]">
+    <div className="flex justify-center items-center bg-gray-100 px-2 sm:px-4 min-h-screen">
+      <div className="relative rounded-2xl shadow-xl bg-[#678DB2] overflow-hidden w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
 
-        {/* Ícone de perfil */}
         <div className="absolute top-2 right-2 z-20">
           <FaUserCircle
-            className="w-6 h-6 sm:w-7 sm:h-7 text-white cursor-pointer hover:scale-110 transition-transform"
+            className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-9 lg:w-10 lg:h-10 text-white cursor-pointer hover:scale-110 transition-transform"
             onClick={() => navigate("/perfil")}
           />
         </div>
 
-        {/* Imagem principal ocupando todo card */}
         <div className="relative w-full">
           <img
             src="src/assets/home_completo.png"
             alt="Home Completo"
-            className="w-full h-auto block"
+            className="w-full h-auto object-cover block"
           />
 
-          {/* Categorias um pouco abaixo do centro */}
-          <div className="absolute top-[65%] left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
+          <div className="absolute top-[60%] sm:top-[62%] md:top-[65%] left-1/2 transform -translate-x-1/2 flex gap-2 sm:gap-3 md:gap-4 lg:gap-5 z-20">
             {categorias.map((categoria) => (
               <div
                 key={categoria.titulo}
-                className="w-[50px] h-[50px] cursor-pointer flex items-center justify-center hover:scale-105 transition-transform"
+                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 cursor-pointer flex items-center justify-center hover:scale-105 transition-transform"
                 onClick={() => handleCategoriaClick(categoria.titulo)}
               >
                 <img
@@ -97,10 +91,10 @@ export default function Home() {
 
       {/* MODAIS */}
       <Modal isOpen={open} onClose={() => setOpen(false)}>
-        <h2 className="text-xl font-semibold mb-4 text-center">Escolha uma opção</h2>
-        <div className="flex flex-col gap-4">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-center">Escolha uma opção</h2>
+        <div className="flex flex-col gap-3 sm:gap-4">
           <button
-            className="w-full bg-[#A0BBD5] text-white py-3 rounded-xl text-lg"
+            className="w-full bg-[#A0BBD5] text-white py-2.5 sm:py-3 rounded-xl text-base sm:text-lg"
             onClick={() => {
               setChoice("livros");
               setOpen(false);
@@ -110,7 +104,7 @@ export default function Home() {
             Livros
           </button>
           <button
-            className="w-full bg-[#4F73AE] text-white py-3 rounded-xl text-lg"
+            className="w-full bg-[#4F73AE] text-white py-2.5 sm:py-3 rounded-xl text-base sm:text-lg"
             onClick={() => {
               setChoice("retiradas");
               setOpen(false);
@@ -120,8 +114,8 @@ export default function Home() {
             Retiradas
           </button>
           <button
+            className="w-full bg-[#5288BC] text-white py-2 rounded-lg text-sm sm:text-base"
             onClick={() => setOpen(false)}
-            className="w-full bg-[#5288BC] text-white py-2 rounded-lg"
           >
             Fechar
           </button>
