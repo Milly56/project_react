@@ -6,14 +6,10 @@
     onSelect: (livro: Livro) => void;
     }
 
-    export default function LivroBuscarModal({
-    onClose,
-    onSelect,
-    }: LivroBuscarModalProps) {
+    export default function LivroBuscarModal({ onClose, onSelect }: LivroBuscarModalProps) {
     const [titulo, setTitulo] = useState("");
     const [erro, setErro] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
-
     const [livroEncontrado, setLivroEncontrado] = useState<Livro | null>(null);
 
     const handleBuscar = async () => {
@@ -37,28 +33,30 @@
     };
 
     return (
-        <div className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold mb-4 text-center">Buscar Livro</h2>
+        <div className="flex flex-col gap-4 w-full max-w-sm sm:max-w-md md:max-w-lg">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-center">
+            Buscar Livro
+        </h2>
 
         <input
-            className="border rounded-lg w-full p-3"
+            className="border rounded-lg w-full p-3 sm:p-4 text-sm sm:text-base"
             placeholder="Digite o título do livro"
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
         />
 
-        {erro && <p className="text-red-500 text-center">{erro}</p>}
+        {erro && <p className="text-red-500 text-center text-sm sm:text-base">{erro}</p>}
 
         <button
             onClick={handleBuscar}
-            className="bg-[#5288BC] text-white p-3 rounded-lg"
+            className="bg-[#5288BC] text-white p-3 sm:p-4 rounded-lg text-sm sm:text-base disabled:opacity-50"
             disabled={loading}
         >
             {loading ? "Buscando..." : "Buscar"}
         </button>
 
         {livroEncontrado && (
-            <div className="border rounded-lg p-4 bg-gray-100 flex flex-col gap-2">
+            <div className="border rounded-lg p-4 sm:p-6 bg-gray-100 flex flex-col gap-3 sm:gap-4 text-sm sm:text-base">
             <p>
                 <strong>ID:</strong> {livroEncontrado.id}
             </p>
@@ -74,17 +72,20 @@
 
             <button
                 onClick={() => {
-                onSelect(livroEncontrado); 
-                onClose();                
+                onSelect(livroEncontrado);
+                onClose();
                 }}
-                className="bg-green-600 text-white p-2 rounded-lg"
+                className="bg-green-600 text-white p-2 sm:p-3 rounded-lg text-sm sm:text-base"
             >
                 Selecionar
             </button>
             </div>
         )}
 
-        <button onClick={onClose} className="text-red-500 underline text-center">
+        <button
+            onClick={onClose}
+            className="text-red-500 underline text-center text-sm sm:text-base"
+        >
             Cancelar
         </button>
         </div>
