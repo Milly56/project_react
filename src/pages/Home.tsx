@@ -58,8 +58,24 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex justify-center items-center bg-gray-100 px-2 sm:p-4">
-      <div className="h-full rounded-2xl shadow-xl bg-[#678DB2] w-full flex flex-col relative overflow-hidden p-4 sm:p-6 md:p-8">
+    <div className="flex flex-col justify-center items-center bg-gray-100 p-1">
+      <div className="h-full rounded-2xl shadow-xl bg-[#678DB2] w-full flex flex-col relative overflow-hidden p-4 sm:p-6 md:p-2">
+        <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-4">
+          <div className="relative">
+            <h1 className="text-2xl sm:text-3xl md:text-[45px] font-bold text-white max-w-[480px] leading-snug text-center lg:text-left pt-40 pl-20"
+              >O futuro começa com a {" "}<span className="text-[#A0BBD5]">leitura!</span>
+            </h1>
+          </div>
+          <div className="w-[220px] h-[300px] relative left-80 mr-5">
+            <div className="w-56 h-90 bg-white/15 backdrop-blur-md border border-white/25 rounded-xl shadow-lg flex items-center justify-center text-white">
+            </div>
+            <div className="w-56 h-90 bg-white/15 backdrop-blur-md border border-white/25 rounded-xl shadow-lg flex items-center justify-center text-white top-16 left-20 absolute">
+            <p className="mx-4">"A sua biblioteca, a qualquer hora e em qualquer lugar"</p>
+            </div>
+          </div>
+          <div className="relative block w-[220px] h-[300px]">
+          </div>
+        </div>
 
         <div className="absolute top-4 right-4">
           <FaUserCircle
@@ -68,40 +84,15 @@ export default function Home() {
           />
         </div>
 
-        <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-4">
-
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white max-w-[420px] leading-snug text-center lg:text-left">
-            O futuro começa com a{" "}
-            <span className="text-[#A0BBD5]">leitura!</span>
-          </h1>
-
-          <div className="relative block w-[220px] h-[300px]">
-
-            <div className="absolute top-0 left-0 w-[220px] h-[300px] 
-                border-4 border-[#A0B8CF] rounded-2xl shadow-xl z-20">
-            </div>
-
-            <div className="absolute top-6 left-6 w-[220px] h-[300px]
-                border-4 border-[#A0B8CF] rounded-2xl shadow-lg z-10 
-                flex items-center justify-center p-4 text-center">
-
-              <p className="text-white text-sm font-medium">
-                A sua biblioteca, a qualquer hora e em qualquer lugar
-              </p>
-            </div>
-
-          </div>
+        {/*divisor*/}
+        <div className="flex flex-row items-center justify-center gap-2 pt-40 pb-5">
+          <div className="w-full border border-[#74B7F6]"></div>
+          <p className="text-center text-[25px] text-[#ffffff]">Categorias</p>
+          <div className="w-full border border-[#74B7F6]"></div>
         </div>
 
-        <div className="flex justify-center items-center my-4">
-          <img
-            src="src/assets/categoria_home.png"
-            alt="Categorias"
-            className="w-[90%] max-w-[700px] object-contain"
-          />
-        </div>
-
-        <div className="flex flex-row items-center justify-around gap-5">
+        {/* components da seção de categorias */}
+        <div className="flex flex-row items-center justify-around gap-5 py-10">
           {categorias.map((c) => (
             <CategoriaMenu
               key={c.titulo}
