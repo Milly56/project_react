@@ -10,7 +10,7 @@ export default function CategoriaMenu({
   onClick
 }: CategoriaMenuProps) {
   return(
-    <div className="w-[160px] cursor-pointer"
+    <div className="w-40 cursor-pointer"
       onClick={() => {
         if (onClick) {
           onClick();
