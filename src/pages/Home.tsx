@@ -45,16 +45,16 @@ export default function Home() {
     const icon = map[titulo];
     if (icon) {
       setClickedButton(icon);
-      setOpen(true);
+      setOpen(true); 
     }
   };
 
   const categorias = [
     { titulo: "adicionar livros a biblioteca digital", icon: "src/assets/home_adiciona.png" },
-    { titulo: "excluir livros a biblioteca digital", icon: "src/assets/home_excluir.png" },
-    { titulo: "listar livros a biblioteca digital", icon: "src/assets/home_lista.png" },
-    { titulo: "pesquisar livros a biblioteca digital", icon: "src/assets/home_pesquisar.png" },
-    { titulo: "atualizar livros a biblioteca digital", icon: "src/assets/home_atualizar.png" },
+    { titulo: "excluir livros da biblioteca digital", icon: "src/assets/home_excluir.png" },
+    { titulo: "listar livros da biblioteca digital", icon: "src/assets/home_lista.png" },
+    { titulo: "pesquisar livros na biblioteca digital", icon: "src/assets/home_pesquisar.png" },
+    { titulo: "atualizar livros da biblioteca digital", icon: "src/assets/home_atualizar.png" },
   ];
 
   return (
@@ -62,7 +62,6 @@ export default function Home() {
       <div className="h-full rounded-2xl shadow-xl bg-[#678DB2] w-full max-w-[1600px] flex flex-col relative overflow-hidden p-4 sm:p-6">
 
         <div className="flex flex-col lg:flex-row justify-between items-center gap-10 w-full">
-
           <div className="flex-1 text-center lg:text-left">
             <h1 className="text-[40px] sm:text-[45px] font-bold text-white leading-snug pt-20">
               O futuro começa com a{" "}
@@ -144,12 +143,14 @@ export default function Home() {
         {choice === "livros" && (
           <>
             {clickedButton === "home_adiciona" && <LivroAdicionarModal onClose={() => setOpenSecond(false)} />}
+
             {clickedButton === "home_pesquisar" && (
               <LivroBuscarModal
                 onClose={() => setOpenSecond(false)}
                 onSelect={handleSelectLivro}
               />
             )}
+
             {clickedButton === "home_atualizar" && (
               livroSelecionado ? (
                 <LivroEditarModal
@@ -170,6 +171,7 @@ export default function Home() {
                 </div>
               )
             )}
+
             {clickedButton === "home_lista" && <LivroListModal onClose={() => setOpenSecond(false)} />}
             {clickedButton === "home_excluir" && <LivroExcluirModal onClose={() => setOpenSecond(false)} />}
           </>
