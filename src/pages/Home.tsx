@@ -4,34 +4,20 @@ import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-import Modal from "../components/Modal";
-import LivroAdicionarModal from "../components/Livros/LivroAdicionarModal";
-import RetirarLivroModal from "../components/Retiradas/RetirarLivrosModal";
-import LivroBuscarModal from "../components/Livros/LivroBuscarModal";
-import LivroExcluirModal from "../components/Livros/LivroExcluirModel";
-import LivroListModal from "../components/Livros/LivroListaModal";
-import LivroEditarModal from "../components/Livros/LivroEditarModal";
-import ListaRetiradasModal from "../components/Retiradas/ListaRetiradasModal";
-import { Livro } from "../services/livro/livrobuscar.service";
-import { livroService } from "../services/livro/livroeditar.service";
-import BuscarRetiradaModal from "../components/Retiradas/BuscarRetiradasModal";
-import DevolverLivroModal from "../components/Retiradas/DevolucaoRetirada";
-import ExcluirRetiradaModal from "../components/Retiradas/ExcluirRetiradaModal";
-
 import CategoriaMenu from "../components/CategoriaMenu";
+import EscolhaModal from "../components/EscolhaModal";
+
+import homeAdicionar from "../assets/home_adiciona.png";
+import homeExcluir from "../assets/home_excluir.png";
+import homeLista from "../assets/home_lista.png";
+import homePesquisar from "../assets/home_pesquisar.png";
+import homeAtualizar from "../assets/home_atualizar.png";
 
 export default function Home() {
-  const [open, setOpen] = useState(false);
-  const [openSecond, setOpenSecond] = useState(false);
+  const [openEscolha, setOpenEscolha] = useState(false);
   const [clickedButton, setClickedButton] = useState("");
-  const [choice, setChoice] = useState("");
-  const [livroSelecionado, setLivroSelecionado] = useState<Livro | null>(null);
 
   const navigate = useNavigate();
-
-  const handleSelectLivro = (livro: Livro) => {
-    setLivroSelecionado(livro);
-  };
 
   const handleCategoriaClick = (titulo: string) => {
     const map: Record<string, string> = {
@@ -43,18 +29,18 @@ export default function Home() {
     };
 
     const icon = map[titulo];
-    if (icon) {
-      setClickedButton(icon);
-      setOpen(true); 
-    }
+    if (!icon) return;
+
+    setClickedButton(icon);
+    setOpenEscolha(true);
   };
 
   const categorias = [
-    { titulo: "adicionar livros a biblioteca digital", icon: "src/assets/home_adiciona.png" },
-    { titulo: "excluir livros da biblioteca digital", icon: "src/assets/home_excluir.png" },
-    { titulo: "listar livros da biblioteca digital", icon: "src/assets/home_lista.png" },
-    { titulo: "pesquisar livros na biblioteca digital", icon: "src/assets/home_pesquisar.png" },
-    { titulo: "atualizar livros da biblioteca digital", icon: "src/assets/home_atualizar.png" },
+    { titulo: "adicionar livros a biblioteca digital", icon: homeAdicionar },
+    { titulo: "excluir livros da biblioteca digital", icon: homeExcluir },
+    { titulo: "listar livros da biblioteca digital", icon: homeLista },
+    { titulo: "pesquisar livros na biblioteca digital", icon: homePesquisar },
+    { titulo: "atualizar livros da biblioteca digital", icon: homeAtualizar },
   ];
 
   return (
@@ -104,89 +90,11 @@ export default function Home() {
         </div>
       </div>
 
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
-        <h2 className="text-xl font-semibold mb-4 text-center">Escolha uma opção</h2>
-
-        <div className="flex flex-col gap-4">
-          <button
-            className="w-full bg-[#A0BBD5] text-white py-3 rounded-xl text-lg"
-            onClick={() => {
-              setChoice("livros");
-              setOpen(false);
-              setOpenSecond(true);
-            }}
-          >
-            Livros
-          </button>
-
-          <button
-            className="w-full bg-[#4F73AE] text-white py-3 rounded-xl text-lg"
-            onClick={() => {
-              setChoice("retiradas");
-              setOpen(false);
-              setOpenSecond(true);
-            }}
-          >
-            Retiradas
-          </button>
-
-          <button
-            onClick={() => setOpen(false)}
-            className="w-full bg-[#5288BC] text-white py-2 rounded-lg"
-          >
-            Fechar
-          </button>
-        </div>
-      </Modal>
-
-      <Modal isOpen={openSecond} onClose={() => setOpenSecond(false)}>
-        {choice === "livros" && (
-          <>
-            {clickedButton === "home_adiciona" && <LivroAdicionarModal onClose={() => setOpenSecond(false)} />}
-
-            {clickedButton === "home_pesquisar" && (
-              <LivroBuscarModal
-                onClose={() => setOpenSecond(false)}
-                onSelect={handleSelectLivro}
-              />
-            )}
-
-            {clickedButton === "home_atualizar" && (
-              livroSelecionado ? (
-                <LivroEditarModal
-                  livro={livroSelecionado}
-                  onClose={() => setOpenSecond(false)}
-                  onSave={async (tituloOriginal, dadosEditados) => {
-                    const atualizado = await livroService.atualizarLivro(
-                      tituloOriginal,
-                      dadosEditados
-                    );
-                    setLivroSelecionado(atualizado);
-                    setOpenSecond(false);
-                  }}
-                />
-              ) : (
-                <div className="text-center text-red-600 p-4">
-                  Primeiro selecione um livro em <b>Pesquisar</b>.
-                </div>
-              )
-            )}
-
-            {clickedButton === "home_lista" && <LivroListModal onClose={() => setOpenSecond(false)} />}
-            {clickedButton === "home_excluir" && <LivroExcluirModal onClose={() => setOpenSecond(false)} />}
-          </>
-        )}
-
-        {choice === "retiradas" && (
-          <>
-            {clickedButton === "home_adiciona" && <RetirarLivroModal onClose={() => setOpenSecond(false)} />}
-            {clickedButton === "home_lista" && <ListaRetiradasModal onClose={() => setOpenSecond(false)} />}
-            {clickedButton === "home_atualizar" && <DevolverLivroModal onClose={() => setOpenSecond(false)} />}
-            {clickedButton === "home_pesquisar" && <BuscarRetiradaModal onClose={() => setOpenSecond(false)} />}
-            {clickedButton === "home_excluir" && <ExcluirRetiradaModal onClose={() => setOpenSecond(false)} />}
-          </>
-        )}
-      </Modal>
+      <EscolhaModal
+        isOpen={openEscolha}
+        onClose={() => setOpenEscolha(false)}
+        clickedButton={clickedButton}
+      />
     </div>
   );
 }
