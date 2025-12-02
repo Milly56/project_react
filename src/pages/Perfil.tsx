@@ -19,24 +19,24 @@ export default function Perfil() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-			const id = authService.getUserIdFromToken();
-			if (id === null) {
+		const id = authService.getUserIdFromToken();
+		if (id === null) {
 			navigate("/");
 			return;
-			}
+		}
 
-			usuarioService.buscarPorId(id).then((data) => {
-			setUsuario(data);
-			setNome(data.nome);
-			setEmail(data.email);
-			});
+        usuarioService.buscarPorId(id).then((data) => {
+            setUsuario(data);
+            setNome(data.nome);
+            setEmail(data.email);
+        });
 
-			if (id === 1) {
-			usuarioService
-					.listarUsuarios()
-					.then((data) => setUsuariosLista(data))
-					.catch(() => setErro("Erro ao buscar usuários."));
-			}
+        if (id === 1) {
+            usuarioService
+                .listarUsuarios()
+                .then((data) => setUsuariosLista(data))
+                .catch(() => setErro("Erro ao buscar usuários."));
+        }
 	}, []);
 
 	if (!usuario) return <p className="text-center mt-10">Carregando...</p>;
@@ -68,10 +68,7 @@ export default function Perfil() {
 		try {
 			const id = usuario.id;
 
-			const updated = await usuarioService.atualizarUsuario(id, {
-				nome,
-				email,
-			});
+			const updated = await usuarioService.atualizarUsuario(id, { nome, email });
 
 			setUsuario(updated);
 			setEditMode(false);
@@ -82,11 +79,24 @@ export default function Perfil() {
 		}
 	};
 
+    const handleAdminDeleteUser = async (id: number) => {
+        if (!confirm("Excluir este usuário?")) return;
+
+        try {
+            await usuarioService.deletarUsuario(id);
+
+            setUsuariosLista((prev) => prev.filter((u) => u.id !== id));
+        } catch (error) {
+            console.error("Erro ao excluir usuário:", error);
+            alert("Erro ao excluir.");
+        }
+    };
+
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
 			<div className="bg-white shadow-lg rounded-2xl border border-gray-200 p-8 w-[full] mb-8">
 				<div className="flex flex-row justify-between items-center">
-					<KeyboardBackspaceIcon onClick={handleReturnHome} className="text-[#5288BC] cursor-pointer"/>
+					<KeyboardBackspaceIcon onClick={handleReturnHome} className="text-[#5288BC] cursor-pointer" />
 					<button
 						onClick={handleLogout}
 						className="px-3 py-2 bg-[#5288BC] text-white rounded-lg hover:bg-[#41719A] transition text-sm cursor-pointer"
@@ -94,85 +104,88 @@ export default function Perfil() {
 						Logout
 					</button>
 				</div>
+
 				<h1 className="text-2xl font-semibold text-center my-10 sm:my-6 text-[#5288BC]">Perfil do Usuário</h1>
-					<div className="flex flex-row justify-between flex-wrap gap-5">
-						<div>
-							<label className="block text-gray-700 font-semibold mb-1">Nome</label>
-							{editMode ? (
+
+				<div className="flex flex-row justify-between flex-wrap gap-5">
+					<div>
+						<label className="block text-gray-700 font-semibold mb-1">Nome</label>
+						{editMode ? (
 							<input
 								type="text"
 								value={nome}
 								onChange={(e) => setNome(e.target.value)}
 								className="w-full px-3 py-2 rounded-lg border border-transparent bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#5288BC] shadow-inner"
 							/>
-							) : (
+						) : (
 							<input
 								type="text"
 								readOnly
 								value={usuario.nome}
 								className="w-full px-3 py-2 rounded-lg border border-transparent bg-transparent text-gray-700 select-none shadow-inner"
 							/>
-							)}
-						</div>
-
-						<div>
-							<label className="block text-gray-700 font-semibold mb-1">Email</label>
-							{editMode ? (
-								<input
-									type="email"
-									value={email}
-									onChange={(e) => setEmail(e.target.value)}
-									className="w-full px-3 py-2 rounded-lg border border-transparent bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#5288BC] shadow-inner"
-								/>
-								) : (
-								<input
-									type="text"
-									readOnly
-									value={usuario.email}
-									className="w-full px-3 py-2 rounded-lg border border-transparent bg-transparent text-gray-700 select-none shadow-inner"
-								/>
-							)}
-						</div>
-					</div>
-
-					<div className="mt-8 flex flex-row justify-center sm:justify-end gap-4">
-						{editMode ? (
-							<button
-								onClick={handleUpdate}
-								className="px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition text-sm cursor-pointer"
-							>
-								Salvar
-							</button>
-						) : (
-							<button
-								onClick={() => setEditMode(true)}
-								className="px-6 py-2 bg-[#FFA239] text-white rounded-lg hover:bg-[#fcac52] transition text-sm cursor-pointer"
-							>
-								Editar
-							</button>
 						)}
-						<button
-							onClick={handleDelete}
-							className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300 ease-in-out text-sm cursor-pointer"
-						>
-							Excluir conta
-						</button>
 					</div>
 
-					{usuario.id === 1 && (
-						<button
-							onClick={() => setShowModal(true)}
-							className="mt-10 w-full px-3 py-2 bg-[#5288BC] text-white rounded-lg hover:bg-[#3e79af] transition text-sm cursor-pointer"
-						>
-							Listar Usuários
-						</button>
-					)}
+					<div>
+						<label className="block text-gray-700 font-semibold mb-1">Email</label>
+						{editMode ? (
+							<input
+								type="email"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								className="w-full px-3 py-2 rounded-lg border border-transparent bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#5288BC] shadow-inner"
+							/>
+						) : (
+							<input
+								type="text"
+								readOnly
+								value={usuario.email}
+								className="w-full px-3 py-2 rounded-lg border border-transparent bg-transparent text-gray-700 select-none shadow-inner"
+							/>
+						)}
+					</div>
 				</div>
 
-				{showModal && (
-					<div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
-						<div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg">
-							<div className="flex justify-between items-center mb-4">
+				<div className="mt-8 flex flex-row justify-center sm:justify-end gap-4">
+					{editMode ? (
+						<button
+							onClick={handleUpdate}
+							className="px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition text-sm cursor-pointer"
+						>
+							Salvar
+						</button>
+					) : (
+						<button
+							onClick={() => setEditMode(true)}
+							className="px-6 py-2 bg-[#FFA239] text-white rounded-lg hover:bg-[#fcac52] transition text-sm cursor-pointer"
+						>
+							Editar
+						</button>
+					)}
+
+					<button
+						onClick={handleDelete}
+						className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300 ease-in-out text-sm cursor-pointer"
+					>
+						Excluir conta
+					</button>
+				</div>
+
+				{usuario.id === 1 && (
+					<button
+						onClick={() => setShowModal(true)}
+						className="mt-10 w-full px-3 py-2 bg-[#5288BC] text-white rounded-lg hover:bg-[#3e79af] transition text-sm cursor-pointer"
+					>
+						Listar Usuários
+					</button>
+				)}
+			</div>
+
+			{showModal && (
+				<div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
+					<div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg">
+						<div className="flex justify-between items-center mb-4">
 							<h2 className="text-xl font-semibold text-[#5288BC]">Usuários Cadastrados</h2>
 
 							<button
@@ -181,28 +194,37 @@ export default function Perfil() {
 							>
 								✕
 							</button>
-							</div>
+						</div>
 
-							{erro && <p className="text-red-500 text-center">{erro}</p>}
+						{erro && <p className="text-red-500 text-center">{erro}</p>}
 
-							<div className="max-h-80 overflow-y-auto pr-2">
+						<div className="max-h-80 overflow-y-auto pr-2">
 							{usuariosLista.length === 0 ? (
-									<p className="text-center">Carregando...</p>
+								<p className="text-center">Carregando...</p>
 							) : (
 								usuariosLista.map((u) => (
-								<div
-									key={u.id}
-									className="border-b border-gray-200 py-2 flex justify-between text-gray-700"
-								>
-									<span>{u.nome}</span>
-									<span className="text-gray-500">{u.email}</span>
-								</div>
+									<div
+										key={u.id}
+										className="border-b border-gray-200 py-2 flex justify-between items-center text-gray-700"
+									>
+										<div>
+											<p>{u.nome}</p>
+											<p className="text-gray-500 text-sm">{u.email}</p>
+										</div>
+
+										<button
+											onClick={() => handleAdminDeleteUser(u.id)}
+											className="px-3 py-1 bg-red-500 text-white rounded-lg text-xs hover:bg-red-600 cursor-pointer"
+										>
+											Excluir
+										</button>
+									</div>
 								))
 							)}
-							</div>
 						</div>
 					</div>
-				)}
+				</div>
+			)}
 		</div>
 	);
 }
