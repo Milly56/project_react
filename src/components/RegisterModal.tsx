@@ -78,43 +78,43 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/40">
       {success ? (
-        /* TELA DE SUCESSO ---------------------------- */
-        <div className="bg-white w-full max-w-md rounded-2xl p-6 shadow-xl text-center flex flex-col gap-4">
+
+        <div className="bg-white dark:bg-gray-900 w-full max-w-md rounded-2xl p-6 shadow-xl text-center flex flex-col gap-4">
           <div className="mx-auto w-14 h-14 rounded-lg bg-green-100 flex items-center justify-center">
             <AiOutlineCheck className="text-green-600" size={32} />
           </div>
 
-          <h3 className="text-xl font-semibold">Cadastro realizado!</h3>
+          <h3 className="text-xl font-semibold dark:text-white">Cadastro realizado!</h3>
 
-          <p className="text-gray-600">O usuário foi registrado com sucesso.</p>
+          <p className="text-gray-600 dark:text-gray-300">
+            O usuário foi registrado com sucesso.
+          </p>
 
           <div className="flex gap-4 justify-center">
             <button
               onClick={resetForm}
-              className="bg-[#5288BC] text-white px-4 py-2 rounded-lg"
+              className="bg-[#5288BC] text-white px-4 py-2 rounded-lg dark:bg-red-500 dark:hover:bg-red-600"
             >
               Cadastrar outro
             </button>
 
             <button
               onClick={onClose}
-              className="bg-gray-300 px-4 py-2 rounded-lg"
+              className="bg-gray-300 dark:bg-gray-700 dark:text-white px-4 py-2 rounded-lg"
             >
               Fechar
             </button>
           </div>
         </div>
       ) : (
-        /* FORMULÁRIO ---------------------------- */
-        <div className="bg-white w-full max-w-md rounded-2xl p-6 shadow-xl flex flex-col gap-4">
-          <h2 className="text-xl font-semibold text-center">Criar Conta</h2>
+  
+        <div className="bg-white dark:bg-gray-900 w-full max-w-md rounded-2xl p-6 shadow-xl flex flex-col gap-4">
+          <h2 className="text-xl font-semibold text-center dark:text-white">Criar Conta</h2>
 
-          {/* NOME */}
           <div>
             <TextField
               label="Nome"
-              className="w-full px-3 py-2 border border-gray-300 rounded text-sm sm:text-base"
-              placeholder="Digite seu nome"
+              className="w-full bg-white dark:bg-gray-800 rounded"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
             />
@@ -123,30 +123,25 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             )}
           </div>
 
-          {/* DATA */}
           <div>
-            <label className="block text-xs text-gray-600 mb-1">
+            <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
               Data de nascimento
             </label>
             <TextField
               type="date"
-              className="w-full px-3 py-2 border border-gray-300 rounded text-sm sm:text-base"
+              className="w-full bg-white dark:bg-gray-800 rounded"
               value={dataNascimento}
               onChange={(e) => setDataNascimento(e.target.value)}
             />
             {errors.data_nascimento && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.data_nascimento}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.data_nascimento}</p>
             )}
           </div>
 
-          {/* EMAIL */}
           <div>
             <TextField
               label="Email"
-              className="w-full px-3 py-2 border border-gray-300 rounded text-sm sm:text-base"
-              placeholder="Digite seu email"
+              className="w-full bg-white dark:bg-gray-800 rounded"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -155,13 +150,11 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             )}
           </div>
 
-          {/* SENHA */}
           <div>
             <div className="relative">
               <TextField
                 label="Senha"
-                className="w-full px-3 py-2 border border-gray-300 rounded text-sm sm:text-base pr-10"
-                placeholder="Digite sua senha"
+                className="w-full bg-white dark:bg-gray-800 rounded pr-10"
                 type={showPass ? "text" : "password"}
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
@@ -170,7 +163,7 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
               <button
                 type="button"
                 onClick={() => setShowPass(!showPass)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500 dark:text-gray-300"
               >
                 {showPass ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -180,18 +173,23 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             )}
           </div>
 
-          {/* BOTÃO */}
           <button
             onClick={handleRegister}
             disabled={loading}
-            className={`w-full bg-[#5288BC] hover:bg-[#41719A] transition-all duration-300 ease-in-out text-white py-2.5 rounded font-medium text-sm sm:text-base ${
-              loading ? "opacity-70 cursor-pointer" : "cursor-pointer"
-            }`}
+            className={`
+              w-full py-2.5 rounded font-medium text-sm sm:text-base transition-all duration-300 
+              ${loading ? "opacity-70 cursor-pointer" : "cursor-pointer"} 
+              bg-[#5288BC] text-white hover:bg-[#41719A]
+              dark:bg-red-600 dark:hover:bg-red-700
+            `}
           >
             {loading ? "Cadastrando..." : "Cadastrar-se"}
           </button>
 
-          <button onClick={onClose} className="text-red-500 underline text-center cursor-pointer">
+          <button 
+            onClick={onClose} 
+            className="text-gray-500 dark:text-red-400 underline text-center cursor-pointer"
+          >
             Cancelar
           </button>
         </div>

@@ -46,7 +46,7 @@ export default function DeletarRetiradaModal({ onClose }: { onClose: () => void 
 
             <button
                 onClick={handleDeletar}
-                className="bg-[#5288BC] text-white p-3 rounded-lg hover:opacity-90 transition"
+                className="bg-[#D64545] text-white p-3 rounded-lg shadow-md hover:bg-[#b73737] transition"
             >
                 Remover Retirada
             </button>
@@ -65,7 +65,7 @@ export default function DeletarRetiradaModal({ onClose }: { onClose: () => void 
 
             <button
                 onClick={onClose}
-                className="text-red-500 underline text-center"
+                className="text-[#D64545] underline text-center font-medium hover:text-[#b73737] transition"
             >
                 Fechar
             </button>

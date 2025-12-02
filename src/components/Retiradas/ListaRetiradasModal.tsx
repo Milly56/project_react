@@ -14,17 +14,15 @@ export default function ListaRetiradasModal({ onClose }: { onClose: () => void }
         const fetchRetiradas = async () => {
             setLoading(true);
             setErro(null);
-
             try {
                 const resposta = await retiradaService.listarTodas();
-
                 if (resposta.success && Array.isArray(resposta.retiradas)) {
                     setRetiradas(resposta.retiradas);
                 } else {
-                    throw new Error("Formato de dados inesperado");
+                    throw new Error("Formato inválido");
                 }
             } catch (error) {
-                console.error("Erro ao carregar as retiradas:", error);
+                console.error(error);
                 setErro("Erro ao carregar as retiradas.");
             } finally {
                 setLoading(false);
@@ -34,55 +32,70 @@ export default function ListaRetiradasModal({ onClose }: { onClose: () => void }
         fetchRetiradas();
     }, []);
 
-    const indexOfLastRetirada = currentPage * itemsPerPage;
-    const indexOfFirstRetirada = indexOfLastRetirada - itemsPerPage;
-    const currentRetiradas = retiradas.slice(indexOfFirstRetirada, indexOfLastRetirada);
+    const indexOfLast = currentPage * itemsPerPage;
+    const indexOfFirst = indexOfLast - itemsPerPage;
+    const currentRetiradas = retiradas.slice(indexOfFirst, indexOfLast);
 
     const totalPages = Math.ceil(retiradas.length / itemsPerPage);
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
     return (
-        <div className="flex flex-col gap-4">
-            <h2 className="text-xl font-semibold text-center">
+        <div className="flex flex-col gap-4 animate-fade-in dark:text-white">
+
+            <h2 className="text-xl font-semibold text-center mb-2">
                 Lista de Retiradas
             </h2>
 
-            {erro && <p className="text-red-500 text-center">{erro}</p>}
+            {erro && (
+                <p className="text-red-500 dark:text-red-400 text-center bg-red-100 dark:bg-red-900/40 py-2 rounded-lg text-sm">
+                    {erro}
+                </p>
+            )}
 
             {loading ? (
-                <p className="text-center">Carregando...</p>
+                <p className="text-center text-gray-600 dark:text-gray-300">Carregando...</p>
             ) : (
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-4">
                     {currentRetiradas.length === 0 ? (
-                        <p className="text-center">Nenhuma retirada encontrada.</p>
+                        <p className="text-center text-gray-500 dark:text-gray-400">
+                            Nenhuma retirada encontrada.
+                        </p>
                     ) : (
                         currentRetiradas.map((retirada, idx) => (
                             <div
                                 key={idx}
-                                className="border rounded-lg p-4 bg-gray-100 flex flex-col gap-1 text-sm"
+                                className="
+                                    p-5 rounded-xl shadow-md border 
+                                    bg-gray-100 dark:bg-[#1f1f1f]
+                                    border-gray-300 dark:border-gray-700
+                                    transition hover:shadow-lg
+                                "
                             >
-                                <p><strong>Usuário:</strong> {retirada.nomeUsuario}</p>
-                                <p><strong>Título:</strong> {retirada.tituloLivro}</p>
-                                <p><strong>Quantidade:</strong> {retirada.quantidade}</p>
-                                <p><strong>Motivo:</strong> {retirada.motivo}</p>
-                                <p><strong>Contato:</strong> {retirada.contato}</p>
-                                <p><strong>Retirada:</strong> {new Date(retirada.dataRetirada).toLocaleDateString("pt-BR")}</p>
+                                <p><span className="font-semibold">Usuário:</span> {retirada.nomeUsuario}</p>
+                                <p><span className="font-semibold">Título:</span> {retirada.tituloLivro}</p>
+                                <p><span className="font-semibold">Quantidade:</span> {retirada.quantidade}</p>
+
+                                <p><span className="font-semibold">Motivo:</span> {retirada.motivo}</p>
+
+                                <p><span className="font-semibold">Contato:</span> {retirada.contato}</p>
+
                                 <p>
-                                    <strong>Devolução:</strong>{" "}
-                                    {retirada.dataDevolucao
-                                        ? new Date(retirada.dataDevolucao).toLocaleDateString("pt-BR")
-                                        : "Não devolvido"}
+                                    <span className="font-semibold">Retirada:</span>{" "}
+                                    <span className="text-[#5288BC] dark:text-red-400 font-medium">
+                                        {new Date(retirada.dataRetirada).toLocaleDateString("pt-BR")}
+                                    </span>
+                                </p>
+
+                                <p>
+                                    <span className="font-semibold">Devolução:</span>{" "}
+                                    {retirada.dataDevolucao ? (
+                                        <span className="text-green-600 dark:text-green-400 font-medium">
+                                            {new Date(retirada.dataDevolucao).toLocaleDateString("pt-BR")}
+                                        </span>
+                                    ) : (
+                                        <span className="text-red-600 dark:text-red-400 font-medium">
+                                            Não devolvido
+                                        </span>
+                                    )}
                                 </p>
                             </div>
                         ))
@@ -90,31 +103,48 @@ export default function ListaRetiradasModal({ onClose }: { onClose: () => void }
                 </div>
             )}
 
-            <div className="flex items-center justify-center space-x-4 mt-4">
-                <button
-                    onClick={handlePrevPage}
-                    className="p-2 bg-[#5288BC] text-white rounded-full shadow-md hover:bg-[#3c6c99] transition-all disabled:opacity-50"
-                    disabled={currentPage === 1}
-                >
-                    <AiOutlineArrowLeft size={20} />
-                </button>
+            {retiradas.length > 0 && (
+                <div className="flex items-center justify-center gap-6 mt-2">
 
-                <span className="text-lg font-medium">
-                    Página {currentPage} de {totalPages}
-                </span>
+                    <button
+                        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                        disabled={currentPage === 1}
+                        className="
+                            p-2 rounded-full shadow-md 
+                            bg-[#5288BC] hover:bg-[#3c6c99]
+                            dark:bg-red-600 dark:hover:bg-red-700
+                            text-white transition disabled:opacity-50
+                        "
+                    >
+                        <AiOutlineArrowLeft size={20} />
+                    </button>
 
-                <button
-                    onClick={handleNextPage}
-                    className="p-2 bg-[#5288BC] text-white rounded-full shadow-md hover:bg-[#3c6c99] transition-all disabled:opacity-50"
-                    disabled={currentPage === totalPages}
-                >
-                    <AiOutlineArrowRight size={20} />
-                </button>
-            </div>
+                    <span className="font-medium">
+                        Página {currentPage} de {totalPages}
+                    </span>
+
+                    <button
+                        onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                        disabled={currentPage === totalPages}
+                        className="
+                            p-2 rounded-full shadow-md 
+                            bg-[#5288BC] hover:bg-[#3c6c99]
+                            dark:bg-red-600 dark:hover:bg-red-700
+                            text-white transition disabled:opacity-50
+                        "
+                    >
+                        <AiOutlineArrowRight size={20} />
+                    </button>
+
+                </div>
+            )}
 
             <button
                 onClick={onClose}
-                className="text-[#5288BC] underline text-center mt-4"
+                className="
+                    text-[#5288BC] dark:text-red-400
+                    underline text-center mt-3 hover:opacity-80 transition
+                "
             >
                 Fechar
             </button>

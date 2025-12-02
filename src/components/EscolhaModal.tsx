@@ -37,13 +37,22 @@
     return (
         <>
         <Modal isOpen={isOpen} onClose={onClose}>
-            <h2 className="text-xl font-semibold mb-4 text-center">
+            <h2 className="text-xl font-semibold mb-4 text-center dark:text-white">
             Escolha uma opção
             </h2>
 
             <div className="flex flex-col gap-4">
+
+            {/* LIVROS */}
             <button
-                className="w-full bg-[#A0BBD5] text-white py-3 rounded-xl text-lg"
+                className="
+                w-full py-3 rounded-xl text-lg text-white
+                bg-[#A0BBD5]
+                hover:bg-[#90A8C7]
+                dark:bg-[#FF4C4C]
+                dark:hover:bg-[#E63F3F]
+                transition
+                "
                 onClick={() => {
                 setChoice("livros");
                 onClose();
@@ -53,8 +62,16 @@
                 Livros
             </button>
 
+            {/* RETIRADAS */}
             <button
-                className="w-full bg-[#4F73AE] text-white py-3 rounded-xl text-lg"
+                className="
+                w-full py-3 rounded-xl text-lg text-white
+                bg-[#4F73AE]
+                hover:bg-[#40608F]
+                dark:bg-[#FF4C4C]
+                dark:hover:bg-[#E63F3F]
+                transition
+                "
                 onClick={() => {
                 setChoice("retiradas");
                 onClose();
@@ -64,9 +81,17 @@
                 Retiradas
             </button>
 
+            {/* FECHAR */}
             <button
                 onClick={onClose}
-                className="w-full bg-[#5288BC] text-white py-2 rounded-lg"
+                className="
+                w-full py-2 rounded-lg text-white
+                bg-[#5288BC]
+                hover:bg-[#3A6A96]
+                dark:bg-[#FF4C4C]
+                dark:hover:bg-[#E63F3F]
+                transition
+                "
             >
                 Fechar
             </button>
@@ -102,7 +127,7 @@
                     }}
                     />
                 ) : (
-                    <div className="text-center text-red-600 p-4">
+                    <div className="text-center text-red-600 dark:text-red-400 p-4">
                     Primeiro selecione um livro em <b>Pesquisar</b>.
                     </div>
                 ))}

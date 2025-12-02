@@ -6,3 +6,10 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+theme{
+    --color-primary: #E8E8E8
+    --color-primaty-dark: #636363
+}
